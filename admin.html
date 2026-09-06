@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | AN Traders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f2f5;
+            color: #1e293b;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 260px;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #1e3a8a 0%, #1e1b4b 100%);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0; left: 0;
+            z-index: 100;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+        }
+        .sidebar-header {
+            padding: 2rem 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .sidebar-header img {
+            width: 48px; height: 48px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .sidebar-header .brand h2 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        .sidebar-header .brand span {
+            font-size: 0.72rem;
+            color: #93c5fd;
+            font-weight: 500;
+        }
+
+        .sidebar-nav { padding: 1.5rem 1rem; flex: 1; }
+        .nav-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #60a5fa;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 0 0.8rem;
+            margin-bottom: 0.6rem;
+            margin-top: 1.5rem;
+        }
+        .nav-label:first-child { margin-top: 0; }
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.85rem 1rem;
+            border-radius: 12px;
+            text-decoration: none;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            margin-bottom: 4px;
+        }
+        .sidebar-nav a i {
+            width: 20px;
+            text-align: center;
+            font-size: 1rem;
+        }
+        .sidebar-nav a:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        .sidebar-nav a.active {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            font-weight: 600;
+        }
+        .sidebar-nav a.active i { color: #60a5fa; }
+        .sidebar-nav a.danger:hover { background: rgba(239,68,68,0.15); color: #fca5a5; }
+
+        .sidebar-footer {
+            padding: 1.2rem 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .admin-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .admin-avatar {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem; color: white; font-weight: 700;
+        }
+        .admin-info { flex: 1; }
+        .admin-info strong { display: block; font-size: 0.85rem; color: white; }
+        .admin-info span { font-size: 0.72rem; color: #93c5fd; }
+
+        /* ===== MAIN ===== */
+        .main-wrapper {
+            margin-left: 260px;
+            flex: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top header */
+        .top-header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+        .page-title { font-size: 1.3rem; font-weight: 800; color: #0f172a; }
+        .header-right { display: flex; align-items: center; gap: 1rem; }
+        .header-btn {
+            display: flex; align-items: center; gap: 6px;
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-back { background: #f1f5f9; color: #64748b; }
+        .btn-back:hover { background: #e2e8f0; color: #1e293b; }
+        .time-badge {
+            font-size: 0.8rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        /* ===== CONTENT ===== */
+        .content-area { padding: 2rem; flex: 1; }
+
+        /* Section heading */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .section-title i { color: #2563eb; }
+
+        /* ===== STAT CARDS ===== */
+        .stat-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #f1f5f9;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+        }
+        .stat-card.blue::before { background: linear-gradient(90deg, #2563eb, #60a5fa); }
+        .stat-card.purple::before { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+        .stat-card.orange::before { background: linear-gradient(90deg, #f97316, #fb923c); }
+        .stat-card.green::before { background: linear-gradient(90deg, #16a34a, #4ade80); }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+        .stat-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        .stat-label { font-size: 0.82rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-icon {
+            width: 42px; height: 42px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+        }
+        .stat-card.blue .stat-icon { background: #eff6ff; color: #2563eb; }
+        .stat-card.purple .stat-icon { background: #f5f3ff; color: #7c3aed; }
+        .stat-card.orange .stat-icon { background: #fff7ed; color: #f97316; }
+        .stat-card.green .stat-icon { background: #f0fdf4; color: #16a34a; }
+        .stat-number { font-size: 2rem; font-weight: 900; color: #0f172a; line-height: 1; }
+        .stat-trend { font-size: 0.75rem; color: #16a34a; font-weight: 600; margin-top: 0.3rem; }
+
+        /* ===== PANEL ===== */
+        .panel {
+            background: white;
+            border-radius: 16px;
+            padding: 1.8rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #f1f5f9;
+            margin-bottom: 2rem;
+        }
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .panel-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .panel-title i { color: #2563eb; }
+
+        /* ===== TABLE ===== */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+        .data-table th {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            background: #f8fafc;
+            color: #64748b;
+            font-weight: 700;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .data-table th:first-child { border-radius: 8px 0 0 8px; }
+        .data-table th:last-child { border-radius: 0 8px 8px 0; }
+        .data-table td {
+            padding: 0.9rem 1rem;
+            color: #334155;
+            border-bottom: 1px solid #f1f5f9;
+            font-weight: 500;
+        }
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-table tr:hover td { background: #f8fafc; }
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .status-pending { background: #fff7ed; color: #c2410c; }
+        .status-delivered { background: #f0fdf4; color: #15803d; }
+        .status-cancelled { background: #fef2f2; color: #b91c1c; }
+
+        /* ===== FORM ===== */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+        }
+        .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+        .form-group.full { grid-column: 1 / -1; }
+        .form-group label {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #374151;
+            letter-spacing: 0.3px;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f8fafc;
+            color: #0f172a;
+            font-size: 0.9rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s ease;
+            margin-top: 0;
+        }
+        .form-input:focus { border-color: #2563eb; background: white; box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
+        .form-input::placeholder { color: #94a3b8; }
+        textarea.form-input { resize: vertical; min-height: 80px; }
+        select.form-input { cursor: pointer; }
+
+        .img-row {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr auto;
+            gap: 0.8rem;
+            align-items: center;
+            padding: 0.8rem;
+            background: #f8fafc;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+        .img-row .or-divider {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #94a3b8;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 50%;
+            width: 28px; height: 28px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 0.8rem 1.8rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(37,99,235,0.4); }
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #64748b;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 0.8rem 1.8rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-secondary:hover { background: #e2e8f0; color: #1e293b; }
+        .btn-danger {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1.5px solid #fecaca;
+            border-radius: 8px;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .btn-danger:hover { background: #fee2e2; }
+        .btn-edit {
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1.5px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .btn-edit:hover { background: #dbeafe; }
+
+        /* Product image thumb in table */
+        .product-thumb {
+            width: 42px; height: 42px;
+            border-radius: 8px;
+            background-size: cover;
+            background-position: center;
+            background-color: #f1f5f9;
+            border: 1px solid #e2e8f0;
+        }
+        .product-name-cell { display: flex; align-items: center; gap: 0.8rem; }
+
+        /* Social icons in settings */
+        .social-input-row {
+            display: grid;
+            grid-template-columns: 36px 1fr;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .social-icon-box {
+            width: 36px; height: 36px;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; color: white;
+        }
+
+        /* Section display */
+        .admin-section { display: none; }
+        .admin-section.active { display: block; }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #94a3b8;
+        }
+        .empty-state i { font-size: 3rem; margin-bottom: 1rem; display: block; }
+        .empty-state p { font-size: 0.95rem; }
+
+        @media(max-width: 900px) {
+            .sidebar { width: 70px; }
+            .sidebar-header .brand, .nav-label, .sidebar-nav a span, .sidebar-footer .admin-info { display: none; }
+            .sidebar-nav a { justify-content: center; padding: 0.9rem; }
+            .main-wrapper { margin-left: 70px; }
+            .stat-cards { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="logo.jpg" alt="Logo">
+            <div class="brand">
+                <h2>AN TREDERS</h2>
+                <span>Admin Panel</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-label">Main Menu</div>
+            <a href="#" class="active" id="nav-dashboard" onclick="showSection('dashboard', this)">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" id="nav-products" onclick="showSection('products', this)">
+                <i class="fa-solid fa-box-open"></i>
+                <span>Products</span>
+            </a>
+            <a href="#" id="nav-customers" onclick="showSection('customers', this)">
+                <i class="fa-solid fa-users"></i>
+                <span>Customers</span>
+            </a>
+            <a href="#" id="nav-orders" onclick="showSection('orders', this)">
+                <i class="fa-solid fa-receipt"></i>
+                <span>Orders</span>
+            </a>
+
+            <div class="nav-label">System</div>
+            <a href="#" id="nav-settings" onclick="showSection('settings', this)">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Settings</span>
+            </a>
+            <a href="/" class="btn-back-site">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                <span>View Store</span>
+            </a>
+            <a href="#" class="danger" onclick="logout()">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="admin-badge">
+                <div class="admin-avatar">A</div>
+                <div class="admin-info">
+                    <strong>Administrator</strong>
+                    <span>Super Admin</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN WRAPPER -->
+    <div class="main-wrapper">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="page-title" id="header-title">
+                <i class="fa-solid fa-chart-pie" style="color:#2563eb; margin-right:8px;"></i>
+                Dashboard Overview
+            </div>
+            <div class="header-right">
+                <span class="time-badge" id="live-time"></span>
+                <a href="/" class="header-btn btn-back">
+                    <i class="fa-solid fa-store"></i> View Store
+                </a>
+            </div>
+        </header>
+
+        <!-- CONTENT -->
+        <div class="content-area">
+
+            <!-- ====== DASHBOARD ====== -->
+            <div id="dashboard-section" class="admin-section active">
+                <div class="stat-cards">
+                    <div class="stat-card blue">
+                        <div class="stat-card-top">
+                            <span class="stat-label">Total Products</span>
+                            <div class="stat-icon"><i class="fa-solid fa-box-open"></i></div>
+                        </div>
+                        <div class="stat-number" id="total-products">0</div>
+                        <div class="stat-trend"><i class="fa-solid fa-arrow-up"></i> Active listings</div>
+                    </div>
+                    <div class="stat-card purple">
+                        <div class="stat-card-top">
+                            <span class="stat-label">Total Customers</span>
+                            <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                        </div>
+                        <div class="stat-number" id="total-customers">0</div>
+                        <div class="stat-trend"><i class="fa-solid fa-user-plus"></i> Registered users</div>
+                    </div>
+                    <div class="stat-card orange">
+                        <div class="stat-card-top">
+                            <span class="stat-label">Pending Orders</span>
+                            <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
+                        </div>
+                        <div class="stat-number" id="pending-orders">0</div>
+                        <div class="stat-trend"><i class="fa-solid fa-spinner"></i> Awaiting action</div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="stat-card-top">
+                            <span class="stat-label">Total Revenue</span>
+                            <div class="stat-icon"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+                        </div>
+                        <div class="stat-number" id="total-revenue">₹0</div>
+                        <div class="stat-trend"><i class="fa-solid fa-chart-line"></i> All time</div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title"><i class="fa-solid fa-receipt"></i> Recent Orders</div>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-table-body">
+                            <tr><td colspan="5"><div class="empty-state"><i class="fa-solid fa-receipt"></i><p>No orders yet</p></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ====== PRODUCTS ====== -->
+            <div id="products-section" class="admin-section">
+                <!-- Add/Edit Form -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title"><i class="fa-solid fa-plus-circle"></i> <span id="form-title">Add New Product</span></div>
+                    </div>
+                    <form id="add-product-form">
+                        <input type="hidden" id="product-id">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Product Name *</label>
+                                <input type="text" id="product-name" class="form-input" placeholder="e.g. Jaipuri Kurti Set" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Category *</label>
+                                <select id="product-category" class="form-input">
+                                    <option value="Kurti">🥻 Kurti (Ladies)</option>
+                                    <option value="Saree">👘 Saree (Ladies)</option>
+                                    <option value="Lehenga">👗 Lehenga (Ladies)</option>
+                                    <option value="Pant">👖 Pant (Ladies)</option>
+                                    <option value="Shirt">👔 Shirt (Ladies)</option>
+                                    <option value="Lower">🩳 Lower (Men/Kids)</option>
+                                    <option value="T-Shirt">👕 T-Shirt (Men/Kids)</option>
+                                    <option value="Other">📦 Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Base Price (₹) *</label>
+                                <input type="number" id="product-price" class="form-input" placeholder="0.00" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Discount (₹)</label>
+                                <input type="number" id="product-discount" class="form-input" placeholder="0.00" step="0.01" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Stock Quantity</label>
+                                <input type="number" id="product-stock" class="form-input" placeholder="0" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Available Sizes</label>
+                                <input type="text" id="product-sizes" class="form-input" placeholder="S, M, L, XL, XXL">
+                            </div>
+                            <div class="form-group">
+                                <label>Available Colors</label>
+                                <input type="text" id="product-colors" class="form-input" placeholder="Red, Blue, Green, Yellow">
+                            </div>
+                            <div class="form-group" style="display: flex; align-items: center; padding-top: 1.5rem;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" id="product-trending" style="width: 18px; height: 18px;">
+                                    <span style="font-weight: 600; color: #f97316;"><i class="fa-solid fa-fire"></i> Mark as Trending / Premium</span>
+                                </label>
+                            </div>
+                            <div class="form-group full">
+                                <label>Description</label>
+                                <textarea id="product-description" class="form-input" rows="2" placeholder="Describe this product..."></textarea>
+                            </div>
+
+                            <!-- Image Section -->
+                            <div class="form-group full">
+                                <label style="margin-bottom:0.8rem; display:block; font-size:0.9rem;">
+                                    <i class="fa-solid fa-images" style="color:#2563eb;"></i>
+                                    Product Images (Up to 4) — URL or Upload + Color Tag
+                                </label>
+                                <div style="display:flex; flex-direction:column; gap:0.8rem;">
+                                    <div class="img-row">
+                                        <input type="url" id="img-url-1" class="form-input" placeholder="Image 1 URL">
+                                        <div class="or-divider">OR</div>
+                                        <input type="file" id="img-file-1" accept="image/*" class="form-input" style="padding:0.5rem;">
+                                        <input type="text" id="img-color-1" class="form-input" placeholder="Color (e.g. Red)" style="max-width:160px;">
+                                    </div>
+                                    <div class="img-row">
+                                        <input type="url" id="img-url-2" class="form-input" placeholder="Image 2 URL">
+                                        <div class="or-divider">OR</div>
+                                        <input type="file" id="img-file-2" accept="image/*" class="form-input" style="padding:0.5rem;">
+                                        <input type="text" id="img-color-2" class="form-input" placeholder="Color (e.g. Blue)" style="max-width:160px;">
+                                    </div>
+                                    <div class="img-row">
+                                        <input type="url" id="img-url-3" class="form-input" placeholder="Image 3 URL">
+                                        <div class="or-divider">OR</div>
+                                        <input type="file" id="img-file-3" accept="image/*" class="form-input" style="padding:0.5rem;">
+                                        <input type="text" id="img-color-3" class="form-input" placeholder="Color" style="max-width:160px;">
+                                    </div>
+                                    <div class="img-row">
+                                        <input type="url" id="img-url-4" class="form-input" placeholder="Image 4 URL">
+                                        <div class="or-divider">OR</div>
+                                        <input type="file" id="img-file-4" accept="image/*" class="form-input" style="padding:0.5rem;">
+                                        <input type="text" id="img-color-4" class="form-input" placeholder="Color" style="max-width:160px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display:flex; gap:1rem; margin-top:1.5rem; padding-top:1.2rem; border-top:1px solid #f1f5f9;">
+                            <button type="submit" class="btn-primary" id="submit-btn">
+                                <i class="fa-solid fa-floppy-disk"></i> Save Product
+                            </button>
+                            <button type="button" class="btn-secondary" id="cancel-btn" style="display:none;" onclick="resetForm()">
+                                <i class="fa-solid fa-xmark"></i> Cancel Edit
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Products Table -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title"><i class="fa-solid fa-list"></i> All Products</div>
+                        <span id="product-count" style="font-size:0.82rem; color:#64748b; font-weight:600; background:#f1f5f9; padding:4px 12px; border-radius:20px;">0 items</span>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Discount</th>
+                                <th>Stock</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-table-body">
+                            <tr><td colspan="6"><div class="empty-state"><i class="fa-solid fa-box-open"></i><p>No products added yet</p></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ====== CUSTOMERS ====== -->
+            <div id="customers-section" class="admin-section">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title"><i class="fa-solid fa-users"></i> Registered Customers</div>
+                        <span id="customer-count" style="font-size:0.82rem; color:#64748b; font-weight:600; background:#f1f5f9; padding:4px 12px; border-radius:20px;">0 customers</span>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Registered</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customers-table-body">
+                            <tr><td colspan="5"><div class="empty-state"><i class="fa-solid fa-users"></i><p>No customers registered yet</p></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ====== ORDERS ====== -->
+            <div id="orders-section" class="admin-section">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title"><i class="fa-solid fa-receipt"></i> All Orders</div>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="all-orders-table-body">
+                            <tr><td colspan="5"><div class="empty-state"><i class="fa-solid fa-receipt"></i><p>No orders yet</p></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ====== SETTINGS ====== -->
+            <div id="settings-section" class="admin-section">
+                <div class="panel" style="max-width:700px;">
+                    <div class="panel-header">
+                        <div class="panel-title"><i class="fa-solid fa-sliders"></i> Business Settings</div>
+                    </div>
+                    <form id="settings-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Business Name *</label>
+                                <input type="text" id="set-name" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label>CEO Name</label>
+                                <input type="text" id="set-ceo" class="form-input" placeholder="Optional">
+                            </div>
+                            <div class="form-group">
+                                <label>Partner Name</label>
+                                <input type="text" id="set-partner" class="form-input" placeholder="Optional">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone / WhatsApp *</label>
+                                <input type="text" id="set-phone" class="form-input" placeholder="+91XXXXXXXXXX" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address *</label>
+                                <input type="email" id="set-email" class="form-input" required>
+                            </div>
+                            <div class="form-group full">
+                                <label>Physical Address *</label>
+                                <textarea id="set-address" class="form-input" rows="2" required></textarea>
+                            </div>
+                            <div class="form-group full">
+                                <label>Google Maps Embed URL (src only)</label>
+                                <input type="text" id="set-map" class="form-input" placeholder="https://maps.google.com/...">
+                            </div>
+
+                            <div class="form-group full">
+                                <label style="font-size:0.92rem; font-weight:800; color:#0f172a; margin-bottom:1rem; display:block; border-top:1px solid #f1f5f9; padding-top:1rem;">
+                                    <i class="fa-solid fa-share-nodes" style="color:#2563eb;"></i> Social Media Links
+                                </label>
+                                <div style="display:flex; flex-direction:column; gap:0.8rem;">
+                                    <div class="social-input-row">
+                                        <div class="social-icon-box" style="background:#1877f2;"><i class="fa-brands fa-facebook"></i></div>
+                                        <input type="url" id="set-facebook" class="form-input" placeholder="https://facebook.com/yourpage">
+                                    </div>
+                                    <div class="social-input-row">
+                                        <div class="social-icon-box" style="background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);"><i class="fa-brands fa-instagram"></i></div>
+                                        <input type="url" id="set-instagram" class="form-input" placeholder="https://instagram.com/yourprofile">
+                                    </div>
+                                    <div class="social-input-row">
+                                        <div class="social-icon-box" style="background:#ff0000;"><i class="fa-brands fa-youtube"></i></div>
+                                        <input type="url" id="set-youtube" class="form-input" placeholder="https://youtube.com/@yourchannel">
+                                    </div>
+                                    <div class="social-input-row">
+                                        <div class="social-icon-box" style="background:#1da1f2;"><i class="fa-brands fa-twitter"></i></div>
+                                        <input type="url" id="set-twitter" class="form-input" placeholder="https://twitter.com/yourprofile">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top:1.5rem; padding-top:1.2rem; border-top:1px solid #f1f5f9;">
+                            <button type="submit" class="btn-primary">
+                                <i class="fa-solid fa-floppy-disk"></i> Save Settings
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div><!-- /content-area -->
+    </div><!-- /main-wrapper -->
+
+    <script src="admin.js"></script>
+</body>
+</html>

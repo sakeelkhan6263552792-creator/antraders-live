@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | AN Traders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 35%, #f64f59 70%, #f97316 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated background orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.35;
+            animation: floatOrb 8s ease-in-out infinite alternate;
+        }
+        .orb-1 { width: 500px; height: 500px; background: #a78bfa; top: -150px; left: -100px; animation-delay: 0s; }
+        .orb-2 { width: 400px; height: 400px; background: #f472b6; bottom: -100px; right: -80px; animation-delay: 3s; }
+        .orb-3 { width: 300px; height: 300px; background: #fbbf24; top: 50%; left: 40%; animation-delay: 1.5s; }
+        @keyframes floatOrb {
+            0%   { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, -30px) scale(1.1); }
+        }
+
+        .page-wrapper {
+            display: flex;
+            width: 100%;
+            max-width: 980px;
+            min-height: 580px;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 32px 80px rgba(0,0,0,0.35);
+            position: relative;
+            z-index: 1;
+            margin: 1.5rem;
+        }
+
+        /* Left colorful panel */
+        .left-panel {
+            flex: 1;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(20px);
+            padding: 4rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-right: 1px solid rgba(255,255,255,0.2);
+        }
+        .left-panel .brand-logo {
+            width: 90px; height: 90px;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            margin-bottom: 2rem;
+            border: 3px solid rgba(255,255,255,0.4);
+        }
+        .left-panel .brand-logo img { width: 100%; height: 100%; object-fit: cover; }
+        .left-panel h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: white;
+            letter-spacing: 2px;
+            margin-bottom: 0.8rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .left-panel p {
+            color: rgba(255,255,255,0.85);
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+        .left-panel .features {
+            margin-top: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+        }
+        .left-panel .feature-row {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: rgba(255,255,255,0.9);
+            font-size: 0.92rem;
+            font-weight: 500;
+        }
+        .left-panel .feature-row i {
+            width: 34px; height: 34px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem;
+        }
+
+        /* Right form panel */
+        .right-panel {
+            flex: 1;
+            background: white;
+            padding: 4rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .right-panel .form-header { margin-bottom: 2.5rem; }
+        .right-panel .form-header h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 0.4rem;
+        }
+        .right-panel .form-header p {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .input-group { margin-bottom: 1.4rem; }
+        .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        .input-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .input-wrap i {
+            position: absolute;
+            left: 14px;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 0.85rem 1rem 0.85rem 2.6rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: #f8fafc;
+            color: #0f172a;
+            font-size: 0.95rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.25s ease;
+        }
+        .input-group input:focus {
+            border-color: #7c3aed;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(124,58,237,0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(102,126,234,0.4);
+            letter-spacing: 0.5px;
+        }
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(102,126,234,0.55);
+        }
+        .btn-login:active { transform: translateY(0); }
+
+        .error-msg {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 0.7rem 1rem;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-top: 1rem;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-top: 1.5rem;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: #7c3aed; }
+
+        .auth-tabs {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 2rem;
+            gap: 4px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 0.7rem;
+            border: none;
+            border-radius: 9px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            color: #64748b;
+            background: transparent;
+        }
+        .tab-btn.active {
+            background: white;
+            color: #0f172a;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
+
+        .success-msg {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #16a34a;
+            padding: 0.7rem 1rem;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-top: 1rem;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(30px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        .right-panel { animation: slideIn 0.5s ease-out; }
+
+        @media(max-width: 680px) {
+            .left-panel { display: none; }
+            .right-panel { padding: 3rem 2rem; }
+            .page-wrapper { border-radius: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="page-wrapper">
+        <!-- Left Panel -->
+        <div class="left-panel">
+            <div class="brand-logo">
+                <img src="logo.jpg" alt="AN Traders Logo">
+            </div>
+            <h1>AN TREDERS</h1>
+            <p>Premium Wholesale Fashion<br>Management System</p>
+            <div class="features">
+                <div class="feature-row">
+                    <i class="fa-solid fa-boxes-stacking"></i>
+                    <span>Complete Product Management</span>
+                </div>
+                <div class="feature-row">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Customer & Order Tracking</span>
+                </div>
+                <div class="feature-row">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Sales Analytics Dashboard</span>
+                </div>
+                <div class="feature-row">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Secure Admin Access</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="right-panel">
+            <div class="auth-tabs">
+                <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">
+                    <i class="fa-solid fa-right-to-bracket"></i> Login
+                </button>
+                <button class="tab-btn" id="tab-register" onclick="switchTab('register')">
+                    <i class="fa-solid fa-user-plus"></i> Register
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <div class="auth-form active" id="form-login">
+                <div class="form-header">
+                    <h2>Welcome Back 👋</h2>
+                    <p>Sign in to your admin account to continue</p>
+                </div>
+                <form id="login-form">
+                    <div class="input-group">
+                        <label for="username">Username</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" id="username" placeholder="Enter your username" required autocomplete="username">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="password" placeholder="Enter your password" required autocomplete="current-password">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-login">
+                        <i class="fa-solid fa-right-to-bracket"></i> Sign In to Dashboard
+                    </button>
+                </form>
+                <div id="error-msg" class="error-msg">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span>Invalid username or password. Please try again.</span>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div class="auth-form" id="form-register">
+                <div class="form-header">
+                    <h2>Create Admin 🛡️</h2>
+                    <p>Register a new admin account</p>
+                </div>
+                <form id="register-form">
+                    <div class="input-group">
+                        <label for="reg-username">Username</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" id="reg-username" placeholder="Choose a username" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="reg-password">Password</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="reg-password" placeholder="Choose a secure password" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-login">
+                        <i class="fa-solid fa-user-plus"></i> Register Admin
+                    </button>
+                </form>
+                <div id="reg-error-msg" class="error-msg">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span id="reg-error-text">Registration failed.</span>
+                </div>
+                <div id="reg-success-msg" class="success-msg">
+                    <i class="fa-solid fa-check-circle"></i>
+                    <span>Registered successfully! You can now login.</span>
+                </div>
+            </div>
+
+            <a href="/" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i> Back to Store
+            </a>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>

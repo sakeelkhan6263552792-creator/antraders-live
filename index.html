@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AN Traders | Premium Wholesale Clothing</title>
+    <meta name="description" content="AN Traders - Your trusted wholesale clothing partner. Premium Kurtis, Sarees, Lehengas, T-Shirts and more at the best prices.">
+    <link rel="stylesheet" href="styles.css?v=4">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <i class="fa-solid fa-phone"></i>
+            <span id="dyn-phone-top">6263552792</span>
+        </div>
+        <div class="top-bar-center">Welcome to our Wholesale Sample Catalog</div>
+        <div class="top-bar-right">
+            <select id="lang-switcher" class="lang-select">
+                <option value="en">🌐 English</option>
+                <option value="hi">हिंदी</option>
+                <option value="gu">ગુજરાતી</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- MAIN NAVBAR -->
+    <nav class="main-nav">
+        <div class="nav-logo">
+            <img src="logo.jpg" alt="AN Traders Logo" class="nav-logo-img">
+            <span class="nav-logo-text" id="nav-biz-name">AN TREDERS</span>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#products">Samples</a></li>
+            <li class="dropdown">
+                <a href="#">Categories <i class="fa-solid fa-chevron-down" style="font-size:0.7rem;"></i></a>
+                <ul class="dropdown-menu" id="category-dropdown-menu">
+                    <li><a href="#" onclick="filterCategory('all')">All Products</a></li>
+                    <li><a href="#" onclick="filterCategory('Kurti')">Kurti</a></li>
+                    <li><a href="#" onclick="filterCategory('Saree')">Saree</a></li>
+                    <li><a href="#" onclick="filterCategory('Lehenga')">Lehenga</a></li>
+                    <li><a href="#" onclick="filterCategory('T-Shirt')">T-Shirt</a></li>
+                    <li><a href="#" onclick="filterCategory('Lower')">Lower</a></li>
+                    <li><a href="#" onclick="filterCategory('Shirt')">Shirt</a></li>
+                    <li><a href="#" onclick="filterCategory('Pant')">Pant</a></li>
+                </ul>
+            </li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+        </ul>
+
+        <div class="nav-right">
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search products..." onkeyup="searchProducts()">
+                <button onclick="searchProducts()"><i class="fa-solid fa-search"></i></button>
+            </div>
+            <a href="#" class="nav-icon-btn" id="cart-btn" style="position:relative;" onclick="openCart()">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span id="cart-count" class="cart-badge">0</span>
+            </a>
+            <a href="customer_login.html" class="nav-icon-btn" id="user-auth-btn">
+                <i class="fa-solid fa-user"></i>
+                <i class="fa-solid fa-chevron-down" style="font-size:0.7rem;"></i>
+            </a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="home" class="hero-section">
+        <div class="hero-content">
+            <h1 id="hero-biz-name">AN TREDERS</h1>
+            <p class="hero-tagline">Your Fashion, Your Style</p>
+            <p class="hero-sub">Trendy Clothing at the Best Prices</p>
+            <div class="hero-buttons">
+                <a href="#products" class="btn-hero-primary">View Samples</a>
+                <a href="#products" class="btn-hero-outline">Explore Collection</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES STRIP -->
+    <section class="features-strip">
+        <div class="feature-item">
+            <i class="fa-solid fa-star"></i>
+            <div>
+                <strong>Quality Products</strong>
+                <span>Premium materials</span>
+            </div>
+        </div>
+        <div class="feature-item">
+            <i class="fa-solid fa-tag"></i>
+            <div>
+                <strong>Best Prices</strong>
+                <span>Unbeatable value</span>
+            </div>
+        </div>
+        <div class="feature-item">
+            <i class="fa-solid fa-truck-fast"></i>
+            <div>
+                <strong>Fast Delivery</strong>
+                <span>Pan India shipping</span>
+            </div>
+        </div>
+        <div class="feature-item">
+            <i class="fa-solid fa-headset"></i>
+            <div>
+                <strong>24/7 Support</strong>
+                <span>Always here to help</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- PREMIUM TRENDING SECTION -->
+    <section id="trending-section" style="display:none; padding: 4rem 2rem 2rem 2rem; background: linear-gradient(to bottom, #fff7ed, white);">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h2 style="font-size: 2.2rem; font-weight: 900; background: linear-gradient(135deg, #f97316, #e11d48); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🔥 Premium & Trending</h2>
+            <p style="color: #64748b; font-size: 1.1rem; margin-top: 0.5rem;">Explore our hottest selling exclusive collection</p>
+        </div>
+        <div id="trending-container" style="display: flex; gap: 1.5rem; overflow-x: auto; padding: 1rem 0.5rem 2rem 0.5rem; scroll-snap-type: x mandatory; scroll-behavior: smooth;">
+            <!-- Trending items injected here -->
+        </div>
+    </section>
+
+    <!-- CATEGORY ICONS SECTION -->
+    <section class="categories-section">
+        <h2 class="section-heading">Shop by Category</h2>
+        <div class="category-grid">
+            <div class="cat-card" onclick="filterCategory('all')">
+                <div class="cat-icon"><i class="fa-solid fa-border-all"></i></div>
+                <span>All</span>
+            </div>
+            <div class="cat-card" onclick="filterCategory('Kurti')">
+                <div class="cat-icon" style="background: linear-gradient(135deg,#ff6b9d,#c94b9a)"><i class="fa-solid fa-vest"></i></div>
+                <span>Kurti</span>
+            </div>
+            <div class="cat-card" onclick="filterCategory('Saree')">
+                <div class="cat-icon" style="background: linear-gradient(135deg,#f7971e,#ffd200)"><i class="fa-solid fa-person-dress"></i></div>
+                <span>Saree</span>
+            </div>
+            <div class="cat-card" onclick="filterCategory('Lehenga')">
+                <div class="cat-icon" style="background: linear-gradient(135deg,#a18cd1,#fbc2eb)"><i class="fa-solid fa-spa"></i></div>
+                <span>Lehenga</span>
+            </div>
+            <div class="cat-card" onclick="filterCategory('T-Shirt')">
+                <div class="cat-icon" style="background: linear-gradient(135deg,#43cea2,#185a9d)"><i class="fa-solid fa-shirt"></i></div>
+                <span>T-Shirt</span>
+            </div>
+            <div class="cat-card" onclick="filterCategory('Lower')">
+                <div class="cat-icon" style="background: linear-gradient(135deg,#4facfe,#00f2fe)"><i class="fa-solid fa-person"></i></div>
+                <span>Lower</span>
+            </div>
+            <div class="cat-card" onclick="filterCategory('Shirt')">
+                <div class="cat-icon" style="background: linear-gradient(135deg,#f093fb,#f5576c)"><i class="fa-solid fa-user-tie"></i></div>
+                <span>Shirt</span>
+            </div>
+            <div class="cat-card" onclick="filterCategory('Pant')">
+                <div class="cat-icon" style="background: linear-gradient(135deg,#667eea,#764ba2)"><i class="fa-solid fa-circle-half-stroke"></i></div>
+                <span>Pant</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCTS SECTION -->
+    <section id="products" class="products-section">
+        <div class="products-header">
+            <h2 class="section-heading">Our Products</h2>
+            <div class="filter-bar">
+                <button class="filter-btn active" onclick="filterCategory('all', this)">All</button>
+                <button class="filter-btn" onclick="filterCategory('Kurti', this)">Kurti</button>
+                <button class="filter-btn" onclick="filterCategory('Saree', this)">Saree</button>
+                <button class="filter-btn" onclick="filterCategory('Lehenga', this)">Lehenga</button>
+                <button class="filter-btn" onclick="filterCategory('T-Shirt', this)">T-Shirt</button>
+                <button class="filter-btn" onclick="filterCategory('Lower', this)">Lower</button>
+            </div>
+        </div>
+        <div class="products-grid" id="product-list">
+            <div class="loading-shimmer"></div>
+            <div class="loading-shimmer"></div>
+            <div class="loading-shimmer"></div>
+            <div class="loading-shimmer"></div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="about-section">
+        <div class="about-inner">
+            <h2 class="section-heading">About Us</h2>
+            <p id="about-desc">At AN Traders, we believe in providing top-tier products directly to you without compromising on quality or service.</p>
+            <div class="about-cards">
+                <div class="about-card" id="ceo-box" style="display:none;">
+                    <i class="fa-solid fa-user-tie"></i>
+                    <h4>CEO</h4>
+                    <p id="dyn-ceo"></p>
+                </div>
+                <div class="about-card" id="partner-box" style="display:none;">
+                    <i class="fa-solid fa-handshake"></i>
+                    <h4>Partner</h4>
+                    <p id="dyn-partner"></p>
+                </div>
+                <div class="about-card">
+                    <i class="fa-solid fa-star"></i>
+                    <h4>Quality</h4>
+                    <p>Premium materials only</p>
+                </div>
+                <div class="about-card">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h4>Trusted</h4>
+                    <p>1000+ happy customers</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="contact-section-new">
+        <div class="contact-grid">
+            <div class="contact-info-box">
+                <h2 class="section-heading" style="text-align:left;">Get In Touch</h2>
+                <div class="contact-detail"><i class="fa-solid fa-location-dot"></i><span id="dyn-address">Loading...</span></div>
+                <div class="contact-detail"><i class="fa-solid fa-phone"></i><span id="dyn-phone">Loading...</span></div>
+                <div class="contact-detail"><i class="fa-solid fa-envelope"></i><span id="dyn-email">Loading...</span></div>
+                <div class="social-row">
+                    <a href="#" id="dyn-facebook" target="_blank" class="social-pill" style="display:none; background:#1877f2;"><i class="fa-brands fa-facebook"></i> Facebook</a>
+                    <a href="#" id="dyn-instagram" target="_blank" class="social-pill" style="display:none; background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);"><i class="fa-brands fa-instagram"></i> Instagram</a>
+                    <a href="#" id="dyn-youtube" target="_blank" class="social-pill" style="display:none; background:#ff0000;"><i class="fa-brands fa-youtube"></i> YouTube</a>
+                    <a href="#" id="dyn-twitter" target="_blank" class="social-pill" style="display:none; background:#1da1f2;"><i class="fa-brands fa-twitter"></i> Twitter</a>
+                </div>
+            </div>
+            <div class="map-box">
+                <iframe id="dyn-map" src="about:blank" width="100%" height="320" style="border:0;border-radius:16px;" allowfullscreen loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCT MODAL -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeProductModal()">&times;</span>
+            <div class="modal-images">
+                <div id="modal-main-img" class="main-image"></div>
+                <div id="modal-thumbnails" class="thumbnails"></div>
+            </div>
+            <div class="modal-details">
+                <h2 id="modal-title">Product Name</h2>
+                <div id="modal-price" class="price">₹0.00</div>
+                <p id="modal-desc">Product description goes here.</p>
+                <div id="modal-attrs" style="display:flex; gap:1rem; margin-bottom: 1.5rem; flex-wrap: wrap;"></div>
+                <div style="display:flex; gap:1rem;">
+                    <button id="modal-add-btn" class="btn-modal-primary">Add to Cart</button>
+                    <button id="modal-wa-btn" class="btn-modal-wa"><i class="fa-brands fa-whatsapp"></i> Buy on WhatsApp</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CART SIDEBAR -->
+    <div id="cart-overlay" class="cart-overlay" onclick="closeCart()"></div>
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3><i class="fa-solid fa-cart-shopping"></i> Your Cart</h3>
+            <span onclick="closeCart()" style="cursor:pointer; font-size:1.5rem;">&times;</span>
+        </div>
+        <div id="cart-items" class="cart-items"></div>
+        <div class="cart-footer">
+            <div class="cart-total">Total: <strong id="cart-total">₹0.00</strong></div>
+            <button class="btn-checkout" onclick="checkoutWhatsApp()"><i class="fa-brands fa-whatsapp"></i> Checkout via WhatsApp</button>
+        </div>
+    </div>
+
+    <!-- PREMIUM WHATSAPP FLOAT -->
+    <a href="#" class="whatsapp-float premium-wa" id="wa-float-btn" target="_blank">
+        <div class="wa-tooltip">Chat with us!</div>
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <footer class="main-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <img src="logo.jpg" alt="AN Traders Logo" style="height:50px; border-radius:8px;">
+                <span id="footer-biz-name">AN Traders</span>
+            </div>
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#products">Products</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+                <a href="admin.html">Admin</a>
+            </div>
+            <p class="footer-copy">&copy; 2026 AN Traders. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
