@@ -127,7 +127,7 @@ async def upload_image(file: UploadFile = File(...), current_admin: models.Admin
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
         
-    return {"url": f"https://antraders-live.onrender.com/uploads/{filename}"}
+    return {"url": f"/uploads/{filename}"}
 
 @app.get("/api/settings", response_model=schemas.BusinessSettings)
 def get_settings(db: Session = Depends(get_db)):

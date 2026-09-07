@@ -3,6 +3,13 @@
 ============================================================ */
 const API_URL = 'https://antraders-live.onrender.com/api';
 
+function getImageUrl(url) {
+    if (!url) return '';
+    if (url.startsWith('http://') || url.startsWith('https://')) return url;
+    const baseUrl = API_URL.replace(/\/api\/?$/, '');
+    return url.startsWith('/') ? baseUrl + url : baseUrl + '/' + url;
+}
+
 const token = localStorage.getItem('admin_token');
 if (!token) window.location.href = 'login.html';
 
@@ -214,7 +221,7 @@ async function fetchProducts() {
         }
 
         tbl.innerHTML = allProducts.map(p => {
-            const img = (p.images && p.images.length) ? p.images[0].image_url : '';
+            const img = (p.images && p.images.length) ? getImageUrl(p.images[0].image_url) : '';
             const stockBadge = p.stock > 0
                 ? `<span style="color:#16a34a;font-weight:700;">${p.stock}</span>`
                 : `<span style="color:#dc2626;font-weight:700;">0 <small>(Out)</small></span>`;

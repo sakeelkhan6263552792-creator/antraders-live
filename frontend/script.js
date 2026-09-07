@@ -2,6 +2,13 @@ const API_URL = 'https://antraders-live.onrender.com/api';
 let WHATSAPP_NUMBER = '919876543210';
 let cart = [];
 
+function getImageUrl(url) {
+    if (!url) return '';
+    if (url.startsWith('http://') || url.startsWith('https://')) return url;
+    const baseUrl = API_URL.replace(/\/api\/?$/, '');
+    return url.startsWith('/') ? baseUrl + url : baseUrl + '/' + url;
+}
+
 const translations = {
     en: {
         nav_home: "Home", nav_products: "Products", nav_about: "About Us", nav_contact: "Contact",
@@ -165,7 +172,7 @@ function createProductCardHtml(product) {
     
     let imgUrl = '';
     if (product.images && product.images.length > 0) {
-        imgUrl = product.images[0].image_url;
+        imgUrl = getImageUrl(product.images[0].image_url);
     }
     
     const catBadge = product.category ? `<span class="cat-badge">${product.category}</span>` : '';
@@ -287,10 +294,11 @@ function openProductModal(id) {
     thumbContainer.innerHTML = '';
     
     if (p.images && p.images.length > 0) {
-        mainImg.style.backgroundImage = `url('${p.images[0].image_url}')`;
+        mainImg.style.backgroundImage = `url('${getImageUrl(p.images[0].image_url)}')`;
         p.images.forEach((img, i) => {
             const activeClass = i === 0 ? 'active' : '';
-            thumbContainer.innerHTML += `<div class="thumb ${activeClass}" style="background-image:url('${img.image_url}')" onclick="setModalMainImage('${img.image_url}')"></div>`;
+            const thumbUrl = getImageUrl(img.image_url);
+            thumbContainer.innerHTML += `<div class="thumb ${activeClass}" style="background-image:url('${thumbUrl}')" onclick="setModalMainImage('${thumbUrl}')"></div>`;
         });
     } else {
         mainImg.style.backgroundImage = 'none';
@@ -315,7 +323,7 @@ function openProductModal(id) {
             const selectedColor = e.target.value.toLowerCase();
             const matchedImg = p.images.find(img => img.color_name && img.color_name.toLowerCase() === selectedColor);
             if (matchedImg) {
-                setModalMainImage(matchedImg.image_url);
+                setModalMainImage(getImageUrl(matchedImg.image_url));
             }
         });
     }
