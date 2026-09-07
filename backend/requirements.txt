@@ -1,0 +1,9 @@
+fastapi==0.141.1
+uvicorn==0.52.4
+SQLAlchemy==2.0.52
+python-jose==3.5.0
+passlib==1.7.4
+python-multipart==0.0.32
+aiofiles==23.2.1
+pg8000==1.31.2
+python-dotenv==1.0.1

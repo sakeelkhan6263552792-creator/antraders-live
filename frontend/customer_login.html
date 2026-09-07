@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Login | AN Traders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f64f59 0%, #c471ed 35%, #12c2e9 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.3;
+            animation: floatOrb 9s ease-in-out infinite alternate;
+        }
+        .orb-1 { width: 500px; height: 500px; background: #818cf8; top: -150px; left: -120px; }
+        .orb-2 { width: 380px; height: 380px; background: #fb7185; bottom: -80px; right: -60px; animation-delay: 2s; }
+        .orb-3 { width: 280px; height: 280px; background: #34d399; top: 40%; left: 35%; animation-delay: 4s; }
+        @keyframes floatOrb {
+            0%   { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(25px, -25px) scale(1.08); }
+        }
+
+        .page-wrapper {
+            display: flex;
+            width: 100%;
+            max-width: 950px;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 32px 80px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+            margin: 1.5rem;
+        }
+
+        /* Left side */
+        .left-panel {
+            flex: 1;
+            background: rgba(255,255,255,0.13);
+            backdrop-filter: blur(20px);
+            padding: 4rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-right: 1px solid rgba(255,255,255,0.2);
+        }
+        .left-panel .brand-logo {
+            width: 88px; height: 88px;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+            margin-bottom: 1.5rem;
+            border: 3px solid rgba(255,255,255,0.4);
+        }
+        .left-panel .brand-logo img { width: 100%; height: 100%; object-fit: cover; }
+        .left-panel h1 {
+            font-size: 2rem;
+            font-weight: 900;
+            color: white;
+            letter-spacing: 2px;
+            margin-bottom: 0.6rem;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .left-panel .tagline {
+            color: rgba(255,255,255,0.85);
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+        .promo-cards { display: flex; flex-direction: column; gap: 0.9rem; width: 100%; }
+        .promo-card {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 14px;
+            padding: 1rem 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            text-align: left;
+        }
+        .promo-card i { font-size: 1.3rem; color: #fde68a; flex-shrink: 0; }
+        .promo-card strong { display: block; color: white; font-size: 0.9rem; font-weight: 700; }
+        .promo-card span { color: rgba(255,255,255,0.75); font-size: 0.78rem; }
+
+        /* Right form */
+        .right-panel {
+            flex: 1.1;
+            background: white;
+            padding: 3.5rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Tabs */
+        .auth-tabs {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 2rem;
+            gap: 4px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 0.7rem;
+            border: none;
+            border-radius: 9px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            color: #64748b;
+            background: transparent;
+        }
+        .tab-btn.active {
+            background: white;
+            color: #0f172a;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
+
+        .form-header { margin-bottom: 1.5rem; }
+        .form-header h2 { font-size: 1.6rem; font-weight: 800; color: #0f172a; margin-bottom: 0.3rem; }
+        .form-header p { font-size: 0.88rem; color: #64748b; }
+
+        .input-group { margin-bottom: 1.2rem; }
+        .input-group label {
+            display: block;
+            font-size: 0.83rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.4rem;
+        }
+        .input-wrap { position: relative; display: flex; align-items: center; }
+        .input-wrap i { position: absolute; left: 14px; color: #94a3b8; font-size: 0.88rem; }
+        .input-group input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 2.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 11px;
+            background: #f8fafc;
+            color: #0f172a;
+            font-size: 0.92rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .input-group input:focus {
+            border-color: #c471ed;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(196,113,237,0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 0.95rem;
+            background: linear-gradient(135deg, #f64f59 0%, #c471ed 50%, #12c2e9 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(196,113,237,0.4);
+            letter-spacing: 0.3px;
+        }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(196,113,237,0.55); }
+
+        .error-msg {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 0.7rem 1rem;
+            border-radius: 10px;
+            font-size: 0.83rem;
+            font-weight: 500;
+            margin-top: 0.8rem;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .success-msg {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #16a34a;
+            padding: 0.7rem 1rem;
+            border-radius: 10px;
+            font-size: 0.83rem;
+            font-weight: 500;
+            margin-top: 0.8rem;
+            display: none;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.83rem;
+            font-weight: 500;
+            margin-top: 1.2rem;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: #c471ed; }
+
+        @media(max-width: 680px) {
+            .left-panel { display: none; }
+            .right-panel { padding: 2.5rem 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="page-wrapper">
+        <!-- Left Panel -->
+        <div class="left-panel">
+            <div class="brand-logo">
+                <img src="logo.jpg" alt="AN Traders Logo">
+            </div>
+            <h1>AN TREDERS</h1>
+            <p class="tagline">Your Fashion, Your Style<br>Premium Wholesale Clothing</p>
+            <div class="promo-cards">
+                <div class="promo-card">
+                    <i class="fa-solid fa-star"></i>
+                    <div>
+                        <strong>Exclusive Deals</strong>
+                        <span>Members get special pricing</span>
+                    </div>
+                </div>
+                <div class="promo-card">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <div>
+                        <strong>Fast Delivery</strong>
+                        <span>Pan India shipping available</span>
+                    </div>
+                </div>
+                <div class="promo-card">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <div>
+                        <strong>WhatsApp Orders</strong>
+                        <span>Direct order via WhatsApp</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Form Panel -->
+        <div class="right-panel">
+            <div class="auth-tabs">
+                <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">
+                    <i class="fa-solid fa-right-to-bracket"></i> Login
+                </button>
+                <button class="tab-btn" id="tab-register" onclick="switchTab('register')">
+                    <i class="fa-solid fa-user-plus"></i> Register
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <div class="auth-form active" id="form-login">
+                <div class="form-header">
+                    <h2>Welcome Back! 👋</h2>
+                    <p>Login to your account to continue shopping</p>
+                </div>
+                <form id="customer-login-form">
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-envelope"></i>
+                            <input type="email" id="login-email" placeholder="your@email.com" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="login-password" placeholder="Your password" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-submit">
+                        <i class="fa-solid fa-right-to-bracket"></i> Login to Your Account
+                    </button>
+                </form>
+                <div id="login-error" class="error-msg">
+                    <i class="fa-solid fa-circle-exclamation"></i> Invalid email or password.
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div class="auth-form" id="form-register">
+                <div class="form-header">
+                    <h2>Create Account 🎉</h2>
+                    <p>Join us for exclusive deals and offers</p>
+                </div>
+                <form id="customer-register-form">
+                    <div class="input-group">
+                        <label>Full Name</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" id="reg-name" placeholder="Your full name" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-envelope"></i>
+                            <input type="email" id="reg-email" placeholder="your@email.com" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Phone (Optional)</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-phone"></i>
+                            <input type="text" id="reg-phone" placeholder="+91 XXXXXXXXXX">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="reg-password" placeholder="Create a password" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-submit">
+                        <i class="fa-solid fa-user-plus"></i> Create My Account
+                    </button>
+                </form>
+                <div id="reg-error" class="error-msg">
+                    <i class="fa-solid fa-circle-exclamation"></i> <span id="reg-error-text">Registration failed.</span>
+                </div>
+                <div id="reg-success" class="success-msg">
+                    ✅ Account created! Switching to login...
+                </div>
+            </div>
+
+            <a href="/" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i> Back to Shop
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '/api';
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            document.getElementById('tab-' + tab).classList.add('active');
+            document.getElementById('form-' + tab).classList.add('active');
+        }
+
+        document.getElementById('customer-login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const errEl = document.getElementById('login-error');
+            errEl.style.display = 'none';
+            const res = await fetch(`${API_URL}/customers/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                    'username': document.getElementById('login-email').value,
+                    'password': document.getElementById('login-password').value
+                })
+            });
+            if (res.ok) {
+                const data = await res.json();
+                localStorage.setItem('customer_token', data.access_token);
+                window.location.href = '/';
+            } else {
+                errEl.style.display = 'flex';
+            }
+        });
+
+        document.getElementById('customer-register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const errEl = document.getElementById('reg-error');
+            const succEl = document.getElementById('reg-success');
+            errEl.style.display = 'none';
+            succEl.style.display = 'none';
+
+            const res = await fetch(`${API_URL}/customers/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: document.getElementById('reg-name').value,
+                    email: document.getElementById('reg-email').value,
+                    phone: document.getElementById('reg-phone').value,
+                    password: document.getElementById('reg-password').value
+                })
+            });
+            if (res.ok) {
+                succEl.style.display = 'block';
+                setTimeout(() => switchTab('login'), 1500);
+            } else {
+                const data = await res.json();
+                document.getElementById('reg-error-text').innerText = data.detail || 'Registration failed';
+                errEl.style.display = 'flex';
+            }
+        });
+    </script>
+</body>
+</html>
