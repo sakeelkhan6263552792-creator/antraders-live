@@ -1,4 +1,4 @@
-const API_URL = '/api';
+const API_URL = 'https://antraders-live.onrender.com/api';
 
 function switchTab(tab) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (response.ok) {
                     const data = await response.json();
                     localStorage.setItem('admin_token', data.access_token);
-                    window.location.href = '/admin.html';
+                    window.location.href = 'admin.html';
                 } else {
                     errorMsg.style.display = 'flex';
                     errorMsg.innerText = 'Invalid username or password';

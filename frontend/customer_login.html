@@ -367,7 +367,7 @@
     </div>
 
     <script>
-        const API_URL = '/api';
+        const API_URL = 'https://antraders-live.onrender.com/api';
 
         function switchTab(tab) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -391,7 +391,7 @@
             if (res.ok) {
                 const data = await res.json();
                 localStorage.setItem('customer_token', data.access_token);
-                window.location.href = '/';
+                window.location.href = './';
             } else {
                 errEl.style.display = 'flex';
             }

@@ -1,10 +1,10 @@
 /* ============================================================
    AN TRADERS — Admin Panel JavaScript (Fixed & Complete)
 ============================================================ */
-const API_URL = '/api';
+const API_URL = 'https://antraders-live.onrender.com/api';
 
 const token = localStorage.getItem('admin_token');
-if (!token) window.location.href = '/login.html';
+if (!token) window.location.href = 'login.html';
 
 function getAuthHeaders() {
     return { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` };
@@ -13,7 +13,7 @@ function getAuthHeaders() {
 // ── Overrides HTML inline functions ──────────────────────────
 function logout() {
     localStorage.removeItem('admin_token');
-    window.location.href = '/login.html';
+    window.location.href = 'login.html';
 }
 
 function showSection(section, el) {

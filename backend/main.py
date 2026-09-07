@@ -20,7 +20,7 @@ app = FastAPI(title="AN Traders API")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -127,7 +127,7 @@ async def upload_image(file: UploadFile = File(...), current_admin: models.Admin
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
         
-    return {"url": f"http://localhost:8000/uploads/{filename}"}
+    return {"url": f"https://antraders-live.onrender.com/uploads/{filename}"}
 
 @app.get("/api/settings", response_model=schemas.BusinessSettings)
 def get_settings(db: Session = Depends(get_db)):

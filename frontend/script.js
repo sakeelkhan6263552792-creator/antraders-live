@@ -1,4 +1,4 @@
-const API_URL = '/api';
+const API_URL = 'https://antraders-live.onrender.com/api';
 let WHATSAPP_NUMBER = '919876543210';
 let cart = [];
 
