@@ -67,13 +67,7 @@ def register_admin(admin: schemas.AdminCreate, db: Session = Depends(get_db)):
 def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     admin = db.query(models.Admin).filter(models.Admin.username == form_data.username).first()
     if not admin:
-        if form_data.username == "admin" and form_data.password == "admin123":
-            new_admin = models.Admin(username="admin", hashed_password=get_password_hash("admin123"))
-            db.add(new_admin)
-            db.commit()
-            admin = new_admin
-        else:
-            raise HTTPException(status_code=401, detail="Incorrect username or password")
+        raise HTTPException(status_code=401, detail="Incorrect username or password")
     
     if not verify_password(form_data.password, admin.hashed_password):
         raise HTTPException(status_code=401, detail="Incorrect username or password")

@@ -53,12 +53,19 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const username = document.getElementById('reg-username').value;
             const password = document.getElementById('reg-password').value;
+            const confirmPassword = document.getElementById('reg-confirm-password').value;
             const errorMsg = document.getElementById('reg-error-msg');
             const errorText = document.getElementById('reg-error-text');
             const successMsg = document.getElementById('reg-success-msg');
             
             errorMsg.style.display = 'none';
             successMsg.style.display = 'none';
+            
+            if (password !== confirmPassword) {
+                errorText.innerText = 'Passwords do not match';
+                errorMsg.style.display = 'flex';
+                return;
+            }
             
             try {
                 const response = await fetch(`${API_URL}/admin/register`, {
