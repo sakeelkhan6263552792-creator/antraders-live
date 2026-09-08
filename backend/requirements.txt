@@ -7,3 +7,4 @@ python-multipart==0.0.32
 aiofiles==23.2.1
 pg8000==1.31.2
 python-dotenv==1.0.1
+cloudinary==1.38.0

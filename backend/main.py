@@ -115,19 +115,42 @@ def get_customers(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 # --- Business Settings ---
 @app.post("/api/upload-image")
 async def upload_image(file: UploadFile = File(...), current_admin: models.Admin = Depends(get_current_admin)):
-    import shutil
-    import uuid
     import os
+    import cloudinary
+    import cloudinary.uploader
+    from fastapi import HTTPException
     
-    # Generate unique filename to avoid conflicts
-    ext = os.path.splitext(file.filename)[1]
-    filename = f"{uuid.uuid4()}{ext}"
-    file_path = f"uploads/{filename}"
-    
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    # 1. Validate file type
+    allowed_types = ["image/jpeg", "image/png", "image/webp", "image/jpg"]
+    if file.content_type not in allowed_types:
+        raise HTTPException(status_code=400, detail="Invalid file type. Only JPG, PNG, and WEBP are supported.")
         
-    return {"url": f"/uploads/{filename}"}
+    # 2. Validate file size (e.g., max 5MB)
+    file.file.seek(0, 2)
+    file_size = file.file.tell()
+    file.file.seek(0)
+    if file_size > 5 * 1024 * 1024:
+        raise HTTPException(status_code=400, detail="File too large. Maximum size is 5MB.")
+    
+    cloud_name = os.getenv("CLOUDINARY_CLOUD_NAME")
+    api_key = os.getenv("CLOUDINARY_API_KEY")
+    api_secret = os.getenv("CLOUDINARY_API_SECRET")
+    
+    if not all([cloud_name, api_key, api_secret]):
+        raise HTTPException(status_code=500, detail="Cloudinary credentials are not configured on the server.")
+        
+    cloudinary.config(
+        cloud_name = cloud_name,
+        api_key = api_key,
+        api_secret = api_secret,
+        secure = True
+    )
+    
+    try:
+        result = cloudinary.uploader.upload(file.file, folder="antraders/products")
+        return {"url": result.get("secure_url")}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Image upload failed: {str(e)}")
 
 @app.get("/api/settings", response_model=schemas.BusinessSettings)
 def get_settings(db: Session = Depends(get_db)):
